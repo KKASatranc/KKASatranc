@@ -51,12 +51,14 @@
             flex: 1;
             padding: 0 10px;
             text-align: justify;
+            color: white;
         }
 
         .video-sekmesi {
             flex: 1;
             padding: 0 10px;
             text-align: center;
+            color: white;
         }
 
         .video-bölümü {
@@ -83,6 +85,17 @@
 
         .buton:hover {
             background-color: #0056b3;
+        }
+
+        .shorts {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .shorts iframe {
+            margin-bottom: 20px;
         }
     </style>
 </head>
@@ -122,48 +135,44 @@
         <!-- Bilgi Sekmesi -->
         <div class="bilgi-bölümü">
             <section>
-                <h2 style="text-align: center; color: white;">Hoş Geldiniz!</h2>
+                <h2 style="text-align: center;">Hoş Geldiniz!</h2>
             </section>
 
             <section>
                 <h2>KKA Satranç Kimdir?</h2>
-                <p style="color: white;">KKA Satranç, Youtube'da eğlenceli satranç içeriği üreten ve uzun anlatım
-                    videolarıyla satrancı öğretip anlatan bir kanal, Kimi zaman discord sunucumuzda kişisel olarak
-                    sizlerle ilgilenen bir kişi, kimi zamansa satranç gelişiminizi arttırmanız adına bir kitaptır. Kısaca
-                    KKA Satranç sizlerin satranç deneyimini geliştirmek adına birçok adıma başvuran bir kişi ve
-                    kişilerdir.</p>
+                <p>KKA Satranç, Youtube'da eğlenceli satranç içeriği üreten ve uzun anlatım videolarıyla satrancı
+                    öğretip anlatan bir kanal, Kimi zaman discord sunucumuzda kişisel olarak sizlerle ilgilenen bir
+                    kişi, kimi zamansa satranç gelişiminizi arttırmanız adına bir kitaptır. Kısaca KKA Satranç
+                    sizlerin satranç deneyimini geliştirmek adına birçok adıma başvuran bir kişi ve kişilerdir.</p>
             </section>
 
             <section>
                 <h2>Kitaplar</h2>
-                <a class="yazi"
-                    href="https://mega.nz/file/3uAUCCpY#B1al5vOsQo4T7n_xRt-BHtvHVNqQWVf-LgK-x2G32VU">KKA Satranç Rehberi
+                <a href="https://mega.nz/file/3uAUCCpY#B1al5vOsQo4T7n_xRt-BHtvHVNqQWVf-LgK-x2G32VU">KKA Satranç Rehberi
                     1. Kitap</a>
             </section>
 
             <section>
                 <h2>Sunucumuzla Alakalı</h2>
-                <p style="color: white;">KKA Satranç Discord Sunucusu, satranç etkinlikleri sunan hep beraber eğlenerek
-                    öğrendiğimiz bir satranç sunucusudur. Kendinizi satrançta geliştirebilir, farklı seviyelerde
-                    rakiplerle oynayabilir ve birinci sınıf satranç deneyimi yaşayabilirsiniz ve kaliteli bir sohbet
-                    ortamına dahil olabilirsiniz.</p>
+                <p>KKA Satranç Discord Sunucusu, satranç etkinlikleri sunan hep beraber eğlenerek öğrendiğimiz bir
+                    satranç sunucusudur. Kendinizi satrançta geliştirebilir, farklı seviyelerde rakiplerle oynayabilir
+                    ve birinci sınıf satranç deneyimi yaşayabilirsiniz ve kaliteli bir sohbet ortamına dahil
+                    olabilirsiniz.</p>
             </section>
             <section>
                 <h2>İletişim</h2>
-                <p style="color: white;">kerimcompany@gmail.com</p>
+                <p>kerimcompany@gmail.com</p>
             </section>
         </div>
 
-        <!-- Sağ Video Sekmesi -->
-        <div class="video-sekmesi">
+        <!-- Sağ Video Sekmesi (Shorts) -->
+        <div class="video-sekmesi shorts">
             <h2 style="text-align: center; color: white;">Shorts</h2>
             <div class="video-bölümü">
-                <iframe width="300" height="200" src="https://www.youtube.com/embed/G2KnvKA5pnM" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen></iframe>
-            </div>
-            <div class="video-bölümü">
-                <iframe width="300" height="200" src="https://www.youtube.com/embed/c8fbQqlkVRU" frameborder="0"
+                <div class="buton-bölümü">
+                    <button class="buton" onclick="randomShortsVideo()">Rastgele Shorts Video</button>
+                </div>
+                <iframe id="shorts-iframe" width="319" height="566" src="" title="Rastgele Shorts Video" frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen></iframe>
             </div>
@@ -172,20 +181,55 @@
     <footer>
         <p style="text-align: center; color: white;">Telif Hakkı &copy; 2023 KKA Satranç. Tüm hakları saklıdır.</p>
     </footer>
+
     <script>
         function randomVideoFromChannel() {
-            const videoLinks = [
-                "https://www.youtube.com/embed/G2KnvKA5pnM",
-                "https://www.youtube.com/embed/c8fbQqlkVRU",
-                "https://www.youtube.com/embed/UoQJy0PTn8Y",
-                "https://www.youtube.com/embed/piuLgnzXm2k",
-                "https://www.youtube.com/embed/HR9hZaBDASQ",
-                "https://www.youtube.com/embed/sd-7t654qK8"
-            ];
-            const randomIndex = Math.floor(Math.random() * videoLinks.length);
-            const randomVideoLink = videoLinks[randomIndex];
+            // Video seçimi için kullanılacak iframe ve video başlığı elementlerini alın
             const iframe = document.getElementById("video-iframe");
-            iframe.src = randomVideoLink;
+            const videoBaslik = document.getElementById("video-başlık");
+
+            // Rastgele bir video seçmek için API çağrısı yapın
+            fetch("https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UC8mY2VHihE1fAV7w3UxdBaw&type=video&key=YOUR_API_KEY")
+                .then(response => response.json())
+                .then(data => {
+                    const videos = data.items;
+                    const randomIndex = Math.floor(Math.random() * videos.length);
+                    const videoId = videos[randomIndex].id.videoId;
+                    const videoTitle = videos[randomIndex].snippet.title;
+
+                    // Seçilen videoyu iframe'e yükleyin
+                    iframe.src = `https://www.youtube.com/embed/${videoId}`;
+                    videoBaslik.innerHTML = videoTitle;
+                })
+                .catch(error => {
+                    console.error("Video alınamadı:", error);
+                });
+        }
+
+        function randomShortsVideo() {
+            // Shorts video seçimi için kullanılacak iframe elementini alın
+            const shortsIframe = document.getElementById("shorts-iframe");
+
+            // Rastgele bir shorts video seçmek için array oluşturun
+            const shortsVideos = [
+                "https://www.youtube.com/embed/Q4JTJtXlVa4",
+                "https://www.youtube.com/embed/xynFM0hQa4M",
+                "https://www.youtube.com/embed/X-CtLdtKcq4",
+                "https://www.youtube.com/embed/AhUh5KMHsII",
+                "https://www.youtube.com/embed/Zu49QtenIpc",
+                "https://www.youtube.com/embed/MPLls6rAW94",
+                "https://www.youtube.com/embed/mFaxit6fnlY",
+                "https://www.youtube.com/embed/Pj5SILb4Aq0",
+                "https://www.youtube.com/embed/VG2JYLkOcHY",
+                "https://www.youtube.com/embed/B60dIBuC_sI"
+            ];
+
+            // Rastgele bir shorts video seçin
+            const randomIndex = Math.floor(Math.random() * shortsVideos.length);
+            const randomShortsVideoUrl = shortsVideos[randomIndex];
+
+            // Seçilen videoyu iframe'e yükleyin
+            shortsIframe.src = randomShortsVideoUrl;
         }
     </script>
 </body>
